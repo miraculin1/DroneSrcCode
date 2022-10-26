@@ -1,21 +1,23 @@
+#include "IIC.h"
 #include "LED.h"
+#include "MPU6050.h"
 #include "stm32f4xx.h"
-#include "stm32f4xx_gpio.h"
-#include "stm32f4xx_rcc.h"
 #include <stdint.h>
 
 int main() {
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+  initLED();
 
-  GPIO_InitTypeDef GPIO_InitStruct;
-  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-  GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5;
-  GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
-  GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-
-  GPIO_Init(GPIOA, &GPIO_InitStruct);
-  GPIO_SetBits(GPIOA, GPIO_Pin_5);
+  uint16_t x;
+  uint16_t y;
+  uint16_t z;
+  uint8_t reg = 0;
+  initIIC();
+  // TODO bug in 0x1a 0x1b 0x1c
+  /* initMPU6050(); */
+  ref();
+  IIC_ReadData(0xd0, 0x6b, &reg);
+  LED_ON();
   while (1) {
+    ReadMPU6050(&x, &y, &z);
   }
 }

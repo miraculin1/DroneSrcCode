@@ -1,5 +1,5 @@
 USE_SPL = 1
-TARGET = Template
+TARGET = Drone
 
 BUILD_DIR = build
 EXCLUD_DIR = "./SPLib/*"
@@ -57,6 +57,7 @@ AS_INC =
 SPLib_C_INC = \
 				-I./SPLib \
 				-I./SPLib/inc \
+				-I./Debug/Inc \
 
 C_INC = \
 				-I./Basic/Inc \
