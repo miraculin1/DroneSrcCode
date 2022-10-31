@@ -1,48 +1,51 @@
 #include "MPU6050.h"
 #include "IIC.h"
-#include <stdint.h>
+#include "USART.h"
+#include "Delay.h"
 
-// rough delay
-static void delay(uint32_t ms) {
-  int i = 0;
+void RoughDelay(uint32_t ms) {
+  uint32_t i;
   while (ms--) {
-  i = 12000;
+    i = 12000;
     while (i--)
       ;
   }
 }
 
+// copied from the answer OK to run
 void ref() {
   IIC_WriteData(SELF_ADD, 0x6b, 0x00);
   IIC_WriteData(SELF_ADD, 0x19, 0x00);
   IIC_WriteData(SELF_ADD, 0x1a, 0x06);
   IIC_WriteData(SELF_ADD, 0x1b, 0x18);
   IIC_WriteData(SELF_ADD, 0x1c, 0x00);
-
 }
+
+// Buggy TODO when set the 0x6b 0x80 (reset device)
+// MPU6050 wont function untill power off
 void initMPU6050() {
-  uint8_t data = 0;
-  // reset device
+
+  /* // reset device */
   IIC_WriteData(SELF_ADD, 0x6b, 0x80);
-  delay(1000);
+  delay_ms(100);
+
+  /* IIC_WriteData(SELF_ADD, 0x68, 0x07); */
+
   // select 8MHz internal clock
   IIC_WriteData(SELF_ADD, 0x6b, 0x00);
   // all axis no standby
   IIC_WriteData(SELF_ADD, 0x6c, 0x00);
   // disable interupts
-  IIC_ReadData(SELF_ADD, 0x6b, &data);
   IIC_WriteData(SELF_ADD, 0x38, 0x00);
   // DLPF as 20Hz
-  IIC_WriteData(SELF_ADD, 0x1a, 0x04);
+  IIC_WriteData(SELF_ADD, 0x1a, 0x06);
   IIC_WriteData(SELF_ADD, 0x19, 0x00);
   // Gyro set to 2000degs/sec
   IIC_WriteData(SELF_ADD, 0x1b, 0x18);
   // acce set to +- 2g
   IIC_WriteData(SELF_ADD, 0x1c, 0x00);
   // set direct link to all senser in GY86
-  // TODO 0x37 would change 0x6d to 65d
   IIC_WriteData(SELF_ADD, 0x37, 0x02);
-  IIC_ReadData(SELF_ADD, 0x6b, &data);
 }
 
 void ReadMPU6050(uint16_t *x, uint16_t *y, uint16_t *z) {

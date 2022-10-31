@@ -7,6 +7,47 @@ int IIC1_CheckStatus(uint16_t s1, uint16_t s2) {
   return 0;
 }
 
+
+// using pb8 SCL
+// pb9 SDL
+void initIIC() {
+  // enable clock
+  RCC_AHB1 |= (0x1 << 1);
+  RCC_APB1 |= (0x1 << 21);
+
+  // set GPIOB
+  GPIOB_MODER &= ~(0x3 << (8 * 2));
+  GPIOB_MODER &= ~(0x3 << (9 * 2));
+  GPIOB_MODER |= (0x2 << (8 * 2));
+  GPIOB_MODER |= (0x2 << (9 * 2));
+
+  GPIOB_OTYPER |= (0x1 << 8);
+  GPIOB_OTYPER |= (0x1 << 9);
+
+  GPIOB_OSPEEDR |= (0x3 << (2 * 8));
+  GPIOB_OSPEEDR |= (0x3 << (2 * 9));
+
+  GPIOB_PUPDR &= ~(0x3 << (2 * 8));
+  GPIOB_PUPDR &= ~(0x3 << (2 * 9));
+  GPIOB_PUPDR |= (0x1 << 8);
+  GPIOB_PUPDR |= (0x1 << 9);
+
+  GPIOB_AF_H &= ~(0xf << (4 * 0));
+  GPIOB_AF_H &= ~(0xf << (4 * 1));
+  GPIOB_AF_H |= (0x4 << (4 * 0));
+  GPIOB_AF_H |= (0x4 << (4 * 1));
+
+  // set IIC
+  IIC1_CR2 &= ~(0x3f);
+  IIC1_CR2 |= (42);
+
+  IIC1_CCR |= (210);
+
+  IIC1_TRISE |= (43);
+
+  IIC1_CR1 |= (0x1);
+}
+
 /*
  * IIC 对于每一步的 SRx 的变换在手册里有详细的描述，那么如果
  * 不按照那个顺序去检查（或者访问）相关寄存器会导致错误
@@ -68,6 +109,8 @@ void IIC_ReadData(uint32_t SlaveAdd, uint32_t tar, uint8_t *out) {
     ;
 
   IIC1_DR = SlaveAdd + 1;
+  // enable ACK
+  IIC1_CR1 |= (0x1 << 10);
 
   // Check ADDR
   while (!IIC1_CheckStatus(0x2, 0x3))
@@ -78,44 +121,7 @@ void IIC_ReadData(uint32_t SlaveAdd, uint32_t tar, uint8_t *out) {
     ;
 
   IIC1_CR1 |= (0x1 << 9);
+  // disable ACK
   IIC1_CR1 &= ~(0x1 << 10);
   *out = IIC1_DR;
-}
-
-void initIIC() {
-  // enable clock
-  RCC_AHB1 |= (0x1 << 1);
-  RCC_APB1 |= (0x1 << 21);
-
-  // set GPIOB
-  GPIOB_MODER &= ~(0x3 << (8 * 2));
-  GPIOB_MODER &= ~(0x3 << (9 * 2));
-  GPIOB_MODER |= (0x2 << (8 * 2));
-  GPIOB_MODER |= (0x2 << (9 * 2));
-
-  GPIOB_OTYPER |= (0x1 << 8);
-  GPIOB_OTYPER |= (0x1 << 9);
-
-  GPIOB_OSPEEDR |= (0x3 << (2 * 8));
-  GPIOB_OSPEEDR |= (0x3 << (2 * 9));
-
-  GPIOB_PUPDR &= ~(0x3 << (2 * 8));
-  GPIOB_PUPDR &= ~(0x3 << (2 * 9));
-  GPIOB_PUPDR |= (0x1 << 8);
-  GPIOB_PUPDR |= (0x1 << 9);
-
-  GPIOB_AF_H &= ~(0xf << (4 * 0));
-  GPIOB_AF_H &= ~(0xf << (4 * 1));
-  GPIOB_AF_H |= (0x4 << (4 * 0));
-  GPIOB_AF_H |= (0x4 << (4 * 1));
-
-  // set IIC
-  IIC1_CR2 &= ~(0x3f);
-  IIC1_CR2 |= (42);
-
-  IIC1_CCR |= (210);
-
-  IIC1_TRISE |= (43);
-
-  IIC1_CR1 |= (0x1);
 }

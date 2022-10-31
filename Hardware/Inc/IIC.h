@@ -27,9 +27,8 @@
 
 void sendAdress();
 void initIIC();
-void ReadTest(uint8_t *);
+int IIC1_CheckStatus(uint16_t s1, uint16_t s2);
 void IIC_WriteData(uint8_t SlaveAdd, uint8_t WriteAddr, uint8_t data);
 void IIC_ReadData(uint32_t SlaveAdd, uint32_t tar, uint8_t *out);
-void ref();
 
 #endif

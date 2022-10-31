@@ -1,4 +1,4 @@
-USE_SPL = 1
+USE_SPL = 0
 TARGET = Drone
 
 BUILD_DIR = build
@@ -57,12 +57,14 @@ AS_INC =
 SPLib_C_INC = \
 				-I./SPLib \
 				-I./SPLib/inc \
-				-I./Debug/Inc \
 
 C_INC = \
 				-I./Basic/Inc \
 				-I./Hardware/Inc \
 				-I./User \
+				-I./Debug/Inc \
+				-I./System/Inc \
+
 
 
 ifeq ($(USE_SPL), 1)
