@@ -3,6 +3,7 @@
 #include "IIC.h"
 #include "LED.h"
 #include "MPU6050.h"
+#include "TIM.h"
 #include "USART.h"
 #include "stm32f4xx.h"
 #include <stdint.h>
@@ -10,22 +11,19 @@
 int main() {
   initLED();
   initIIC();
+  initUSART();
   initMPU6050();
   initHMC();
-  initUSART();
-
-  uint16_t x;
-  uint16_t y;
-  uint16_t z;
-  uint8_t status;
-  /* ReadMPU6050(&x, &y, &z); */
-  /* USendInt(x); */
-  /* USendByte('|'); */
+  /* initTIM3PWM(); */
+  /* unlock(); */
+/*  */
+  /* for (int i = 0; i < 100; i += 10) { */
+    /* setThro(i); */
+    /* delay_ms(1000); */
+  /* } */
+  /* setThro(0); */
+/*  */
+  LED_ON();
   while (1) {
-    HMCReadData(&x, &y, &z);
-    HMCReadByte(0x09, &status);
-    USendByte(0);
-    USendByte(status);
-    delay_ms(1000);
   }
 }

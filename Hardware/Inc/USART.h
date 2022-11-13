@@ -17,6 +17,7 @@
 #define GPIOB_AF_L *(uint32_t *)(GPIOB_Base + 0x20)
 #define GPIOB_AF_H *(uint32_t *)(GPIOB_Base + 0x24)
 
+#define USART1_FREQ 84000000
 #define USART1_Base 0x40011000
 #define USART1_SR *(uint32_t *)(USART1_Base + 0x00)
 #define USART1_DR *(uint32_t *)(USART1_Base + 0x04)

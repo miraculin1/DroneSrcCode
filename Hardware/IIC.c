@@ -41,6 +41,7 @@ void initIIC() {
   IIC1_CR2 &= ~(0x3f);
   IIC1_CR2 |= (42);
 
+  IIC1_CCR &= ~(0x1 << 15);
   IIC1_CCR |= (210);
 
   IIC1_TRISE |= (43);

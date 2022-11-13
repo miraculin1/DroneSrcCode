@@ -4,9 +4,16 @@
 
 uint8_t USART1CheckStatus(uint16_t sr) { return (USART1_SR & sr) == sr; }
 
+static void SetBaudRate(uint32_t baudR) {
+  USART1_BRR &= ~(0xffff);
+  float tmp = (float)USART1_FREQ / (16 * baudR);
+  USART1_BRR |= (int)tmp << 4;
+  USART1_BRR |= ((int)(tmp * 16) - (((int)tmp) << 4));
+}
+
 // using PB6 TX
 // PB7 RX
-void USARTPinInit() {
+static void USARTPinInit() {
   RCC_AHB1 |= (0x1 << 1);
 
   // set to AF mode
@@ -49,11 +56,9 @@ void initUSART() {
 
   // set baud rate
   // 16 over sample
-  // 115200 baud rate
-  // DIV 0x2d 0x9
-  USART1_BRR &= ~(0xffff);
-  USART1_BRR |= (0x2d << 4);
-  USART1_BRR |= (0x9);
+  // 9600 baud rate
+  // DIV 0x222 0x0e
+  SetBaudRate(9600);
 }
 
 void USendByte(uint8_t data) {
