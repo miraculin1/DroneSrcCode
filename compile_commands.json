@@ -969,5 +969,35 @@
    "build/Delay.o"
   ],
   "file": "./System/Delay.c"
+ },
+ {
+  "directory": "/home/miraculin/project/Drone",
+  "arguments": [
+   "arm-none-eabi-gcc",
+   "-c",
+   "-mcpu=cortex-m4",
+   "-mthumb",
+   "-mfpu=fpv4-sp-d16",
+   "-mfloat-abi=hard",
+   "-DSTM32F401xx",
+   "-I./Basic/Inc",
+   "-I./Hardware/Inc",
+   "-I./User",
+   "-I./Debug/Inc",
+   "-I./System/Inc",
+   "-Og",
+   "-Wall",
+   "-fdata-sections",
+   "-ffunction-sections",
+   "-g",
+   "-MMD",
+   "-MP",
+   "-MFbuild/TIM.d",
+   "-Wa,-a,-ad,-alms=build/TIM.lst",
+   "./Hardware/TIM.c",
+   "-o",
+   "build/TIM.o"
+  ],
+  "file": "./Hardware/TIM.c"
  }
 ]

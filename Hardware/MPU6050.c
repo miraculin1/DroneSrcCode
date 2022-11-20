@@ -48,7 +48,7 @@ void initMPU6050() {
   IIC_WriteData(SELF_ADD, 0x37, 0x02);
 }
 
-void ReadMPU6050(uint16_t *x, uint16_t *y, uint16_t *z) {
+void MPUReadData(uint16_t *x, uint16_t *y, uint16_t *z) {
   uint8_t tmp_h;
   uint8_t tmp_l;
   // read x

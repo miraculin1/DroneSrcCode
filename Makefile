@@ -8,6 +8,7 @@ EXCLUD_DIR =""
 endif
 C_SRC = $(shell find . -name '*.c' ! -path $(EXCLUD_DIR))
 
+OPT =
 
 # compile
 PREFIX = arm-none-eabi-
@@ -22,8 +23,6 @@ ASM_SRC = ./startup_stm32f401xx.s
 # wheather debug DEBUG = 1
 DEBUG = 1
 
-#optimize
-OPT = -Og
 
 ###############
 # CFLAGS
@@ -86,7 +85,9 @@ CFLAGS = $(MCU) $(C_DEFS) $(C_INC) $(OPT) -Wall -fdata-sections -ffunction-secti
 
 # set debug flag
 ifeq ($(DEBUG), 1)
-CFLAGS += -g
+CFLAGS += -g3
+#optimize
+OPT = -Og
 endif
 
 # dependency output .d file to build dir

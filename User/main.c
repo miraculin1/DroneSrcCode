@@ -14,16 +14,25 @@ int main() {
   initUSART();
   initMPU6050();
   initHMC();
-  /* initTIM3PWM(); */
-  /* unlock(); */
-/*  */
-  /* for (int i = 0; i < 100; i += 10) { */
-    /* setThro(i); */
-    /* delay_ms(1000); */
-  /* } */
-  /* setThro(0); */
-/*  */
+  initTIM3PWM();
+
   LED_ON();
+  unlock();
+
+  for (int i = 0; i < 100; i += 10) {
+  setThro(i);
+  delay_ms(1000);
+  }
+  setThro(0);
+
+  /* uint16_t x, y, z; */
   while (1) {
+    /* HMCReadData(&x, &y, &z); */
+    /* USendInt(x); */
+    /* USendByte(','); */
+    /* USendInt(y); */
+    /* USendByte(','); */
+    /* USendInt(z); */
+    /* USendByte('|'); */
   }
 }
