@@ -31,6 +31,6 @@
 #define TIM3_ *(uint32_t *)(TIM3_Base + 0x)
 
 void initTIM3PWM();
-void setThro(uint16_t percent);
-void unlock();
+void setThro1(uint16_t percent);
+void initUnlockMotot();
 #endif
